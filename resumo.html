@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumo · Hélices do Céu · Geografia 6º</title>
+<style>
+  :root{
+    --fundo:#0c1526; --fundo2:#15213a; --aco:#263757; --aco2:#3a5079;
+    --laranja:#ff9f43; --azul:#7cc4ff; --verde:#4fd8a0; --vermelho:#ff6370;
+    --amarelo:#ffd166; --texto:#eaf2ff; --cinza:#9aabc7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,Arial,sans-serif;
+    background:radial-gradient(1100px 560px at 50% -10%,#1f3a63,#0c1526 64%),var(--fundo);
+    color:var(--texto);line-height:1.6;padding-bottom:60px}
+  header{background:linear-gradient(170deg,#183257,#0e1a30 55%,#2a2033);padding:28px 18px;text-align:center;
+    box-shadow:0 4px 18px rgba(0,0,0,.55);border-bottom:4px solid var(--laranja);position:relative;overflow:hidden}
+  header:before{content:"";position:absolute;left:50%;top:50%;width:210px;height:210px;margin:-105px 0 0 -105px;border:4px solid rgba(255,159,67,.10);border-radius:50%}
+  header:after{content:"";position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border:4px solid rgba(255,159,67,.08);border-radius:50%}
+  header .selo{font-size:.76rem;letter-spacing:2px;color:#ffd2a3;text-transform:uppercase;position:relative}
+  header h1{font-size:1.6rem;margin:7px 0 3px;position:relative}
+  header p{color:#ccd4e2;font-size:.93rem;position:relative}
+  .wrap{max-width:860px;margin:0 auto;padding:16px}
+  .barra-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}
+  .barra-nav a{background:var(--fundo2);color:var(--texto);text-decoration:none;padding:7px 12px;border-radius:20px;font-size:.85rem;border:1px solid var(--aco)}
+  .barra-nav a.on{background:var(--laranja);color:#2a1d00;font-weight:bold}
+  .barra-nav a.lock{opacity:.5}
+  .intro{background:var(--fundo2);border:1px solid var(--aco);border-radius:14px;padding:16px;margin-bottom:16px}
+  .intro h2{color:var(--laranja);font-size:1.1rem;margin-bottom:8px}
+  .intro ol{margin:8px 0 0 20px}
+  .ordem{text-align:center;font-weight:bold;margin:10px 0;font-size:.95rem;color:#fff}
+  .painel{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+    background:var(--fundo2);border:1px solid var(--aco);border-radius:12px;padding:10px 14px;margin-bottom:16px;font-size:.85rem}
+  .painel .btns{display:flex;gap:6px;flex-wrap:wrap}
+  button{cursor:pointer;font-family:inherit}
+  .mini{background:var(--fundo);color:var(--texto);border:1px solid var(--aco2);border-radius:8px;padding:6px 10px;font-size:.8rem;cursor:pointer;font-family:inherit}
+  .mini:hover{background:#242a39}
+  /* ---- placar / corrente de elos ---- */
+  .placar{background:#0a0c12;border:2px solid #272d3c;border-radius:16px;padding:14px;margin-bottom:18px;text-align:center}
+  .placar h3{color:var(--amarelo);font-size:.95rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+  .placar p.sub{color:var(--cinza);font-size:.8rem;margin-bottom:10px}
+  .placar .pts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .placar .pt{width:58px;padding:6px 0;border-radius:14px;background:#141924;border:2px solid var(--aco2);cursor:pointer;font-family:'Courier New',monospace;font-weight:bold;color:#5a6378}
+  .placar .pt small{display:block;font-family:'Segoe UI',sans-serif;font-weight:normal;font-size:.62rem}
+  .placar .pt.aberto{color:var(--laranja);border-color:var(--laranja)}
+  .placar .pt.feito{color:#07241a;background:var(--verde);border-color:var(--verde);box-shadow:0 0 10px rgba(78,208,138,.45)}
+  .placar .total{font-family:'Courier New',monospace;font-size:1.6rem;color:var(--laranja);margin-top:8px}
+  /* ---- blocos ---- */
+  .bloco{background:var(--fundo2);border:1px solid var(--aco);border-radius:16px;margin-bottom:18px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.4)}
+  .bloco.travado{opacity:.55}
+  .bloco-cab{display:flex;align-items:center;gap:12px;padding:14px 16px;background:linear-gradient(90deg,#20263a,#171b26);border-bottom:1px solid var(--aco)}
+  .bloco-cab .num{background:var(--laranja);color:#2a1d00;font-weight:bold;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .bloco.gb .bloco-cab .num{background:var(--azul);color:#06203a}
+  .bloco-cab h3{font-size:1.06rem;color:#fff}
+  .bloco-cab .porto{font-size:.7rem;color:var(--cinza);letter-spacing:1px;text-transform:uppercase}
+  .bloco-corpo{padding:16px}
+  .texto p{margin-bottom:10px}
+  .texto ul{margin:0 0 10px 20px}
+  .texto li{margin-bottom:6px}
+  .texto .destaque{color:var(--laranja);font-weight:bold}
+  .bloco.gb .texto .destaque{color:var(--azul)}
+  .olhar{background:#21283a;border-left:3px solid var(--amarelo);padding:8px 12px;margin:0 0 10px;border-radius:0 8px 8px 0;font-size:.92rem}
+  .olhar b{color:var(--amarelo)}
+  .cadeado{padding:22px 16px;text-align:center;color:var(--cinza);font-size:.9rem}
+  .perg{background:#141925;border:1px solid var(--aco);border-radius:12px;padding:12px;margin-top:14px}
+  .perg.red{border-color:var(--vermelho);box-shadow:0 0 0 1px var(--vermelho)}
+  .perg .tag{display:inline-block;font-size:.66rem;text-transform:uppercase;letter-spacing:1px;padding:2px 8px;border-radius:10px;margin-bottom:6px}
+  .tag.conc{background:#1d3550;color:#bcdcf7}
+  .tag.apl{background:#1f3f2d;color:#aee3c3}
+  .perg label{display:block;font-weight:600;margin-bottom:8px}
+  .perg textarea{width:100%;min-height:70px;background:#0b0e15;color:var(--texto);border:1px solid var(--aco2);border-radius:8px;padding:9px;font-family:inherit;font-size:.95rem;resize:vertical}
+  .aviso{margin-top:8px;padding:9px 11px;border-radius:8px;font-size:.85rem;display:none}
+  .aviso.amarelo{display:block;background:#4a3a12;border:1px solid var(--laranja);color:#ffeccb}
+  .aviso.vermelho{display:block;background:#471a1c;border:1px solid var(--vermelho);color:#ffd1cd}
+  .modelo{margin-top:10px;padding:10px 12px;background:#12301f;border:1px solid var(--verde);border-radius:8px;font-size:.9rem;display:none}
+  .modelo.show{display:block}
+  .modelo .lab{color:#8fe3b4;font-weight:bold;font-size:.78rem;text-transform:uppercase;letter-spacing:1px}
+  .chk{margin-top:10px;font-size:.88rem}
+  .chk .item{display:flex;align-items:center;gap:8px;margin:6px 0;flex-wrap:wrap}
+  .chk .item span{flex:1;min-width:180px}
+  .chk .simnao button{border:1px solid var(--aco2);background:#0b0e15;color:var(--texto);border-radius:6px;padding:4px 10px;margin-left:4px;font-size:.8rem}
+  .chk .simnao button.sim.ativo{background:var(--verde);border-color:var(--verde);color:#04231a}
+  .chk .simnao button.nao.ativo{background:var(--vermelho);border-color:var(--vermelho);color:#fff}
+  .conferir{margin-top:14px;background:var(--verde);color:#04231a;border:none;border-radius:10px;padding:11px 18px;font-size:1rem;font-weight:bold;width:100%}
+  .conferir:disabled{background:#262d3e;color:#6f7896;cursor:not-allowed}
+  .status-bloco{margin-top:10px;text-align:center;font-weight:bold;font-size:.95rem}
+  .prox{margin-top:12px;text-align:center}
+  .prox a{color:var(--azul);text-decoration:none;font-weight:bold}
+  .peg{background:#3a1a20;border:2px solid var(--vermelho);border-radius:16px;padding:16px;margin-top:20px}
+  .peg h3{color:#ffb9b3;margin-bottom:10px}
+  .peg ol{margin-left:20px}
+  .peg li{margin-bottom:7px}
+  .cobertura{background:var(--fundo2);border:1px solid var(--aco);border-radius:16px;padding:16px;margin-top:18px}
+  .cobertura h3{color:var(--azul);margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;font-size:.85rem}
+  th,td{border:1px solid var(--aco);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:#222838}
+  .revisar{background:#3a2d12;border:2px solid var(--laranja);border-radius:16px;padding:16px;margin-top:18px}
+  .revisar h3{color:var(--laranja);margin-bottom:8px}
+  .revisar ul{margin-left:18px}
+  .relatorio{background:var(--fundo2);border:1px dashed var(--azul);border-radius:14px;padding:16px;margin-top:18px;font-size:.9rem}
+  .relatorio h3{color:var(--azul);margin-bottom:8px}
+  .trilha-fim{background:linear-gradient(120deg,#1a2a20,#153328);border:2px solid var(--verde);border-radius:16px;padding:18px;margin-top:18px;text-align:center}
+  .trilha-fim h3{color:#8fe3b4;margin-bottom:8px}
+  .trilha-fim a.btn{display:inline-block;margin-top:8px;background:var(--verde);color:#04231a;text-decoration:none;font-weight:bold;padding:11px 20px;border-radius:10px}
+  .trilha-fim a.btn.off{background:#262d3e;color:#6f7896;pointer-events:none}
+  /* ---- quiz / simulado ---- */
+  .codigo{background:linear-gradient(120deg,#153328,#1b4a35);border:2px solid var(--verde);border-radius:14px;padding:16px;text-align:center;margin-bottom:16px;display:none}
+  .codigo.show{display:block}
+  .codigo .cod{font-size:1.8rem;font-weight:bold;letter-spacing:3px;color:#8fe3b4;margin:6px 0}
+  .progresso{height:10px;background:var(--aco);border-radius:6px;overflow:hidden;margin-bottom:16px}
+  .progresso div{height:100%;background:linear-gradient(90deg,var(--azul),var(--laranja));width:0;transition:width .3s}
+  .q{background:var(--fundo2);border:1px solid var(--aco);border-radius:16px;padding:16px;margin-bottom:14px}
+  .q .num{color:var(--azul);font-weight:bold;font-size:.8rem;letter-spacing:1px;text-transform:uppercase}
+  .q .tema,.q .tipo{float:right;font-size:.7rem;color:var(--cinza);background:var(--fundo);border:1px solid var(--aco2);border-radius:10px;padding:2px 8px}
+  .q .tipo.rom{color:#f3d58a;border-color:var(--laranja)}
+  .q h3{font-size:1rem;margin:6px 0 10px;font-weight:600}
+  .afirm{background:#141925;border-left:3px solid var(--aco2);padding:8px 12px;margin:6px 0;border-radius:0 8px 8px 0;font-size:.93rem}
+  .afirm.ok{border-left-color:var(--verde)}
+  .afirm.no{border-left-color:#777;color:#aaa}
+  .alt{display:block;background:#141925;border:1px solid var(--aco2);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer}
+  .alt:hover{border-color:var(--laranja)}
+  .alt input{margin-right:8px}
+  .alt.sel{border-color:var(--laranja);background:#2a2314}
+  .alt.certa{border-color:var(--verde);background:#12301f}
+  .alt.errada{border-color:#4a4a55;background:#1b1d25;color:#a7a7b2}
+  .alt.marcada-errada{border-color:var(--vermelho);background:#3a1a20}
+  .exp{margin-top:8px;font-size:.88rem;padding:8px 10px;border-radius:8px;background:#0f131d;border-left:3px solid var(--laranja);display:none}
+  .exp.show{display:block}
+  .enviar{width:100%;background:var(--laranja);color:#2a1d00;border:none;border-radius:12px;padding:14px;font-size:1.05rem;font-weight:bold;margin:10px 0}
+  .enviar:disabled{background:#262d3e;color:#6f7896;cursor:not-allowed}
+  .gab{background:var(--fundo2);border:1px dashed var(--azul);border-radius:14px;padding:16px;margin:16px 0;display:none}
+  .gab.show{display:block}
+  .gab input{padding:9px;border-radius:8px;border:1px solid var(--aco2);background:#0b0e15;color:var(--texto);font-size:1rem;width:180px;text-transform:uppercase}
+  .gab button{background:var(--azul);color:#06203a;border:none;border-radius:8px;padding:9px 14px;font-weight:bold;margin-left:6px}
+  .gab .msg{margin-top:8px;font-size:.9rem}
+  /* ---- resumo ---- */
+  .sec{margin:26px 0 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .sec h2{font-size:1.25rem}
+  .sec .pill{font-size:.7rem;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:12px;background:var(--laranja);color:#2a1d00;font-weight:bold}
+  .sec .pill.gb{background:var(--azul);color:#06203a}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+  .card{background:var(--fundo2);border:1px solid var(--aco);border-radius:14px;padding:14px;border-top:4px solid var(--laranja)}
+  .card.gb{border-top-color:var(--azul)}
+  .card h3{font-size:1rem;margin-bottom:8px}
+  .card ul{margin-left:18px}
+  .card li{margin-bottom:5px;font-size:.93rem}
+  .card b{color:var(--laranja)}
+  .card.gb b{color:var(--azul)}
+  .grande{background:linear-gradient(120deg,#20263a,#171b26);border:2px solid var(--laranja);border-radius:16px;padding:16px;font-size:1.02rem}
+  .grande b{color:var(--amarelo)}
+  .postit{background:#ffe88a;color:#3a2a00;border-radius:4px;padding:12px 14px;font-size:.92rem;box-shadow:3px 4px 10px rgba(0,0,0,.45);transform:rotate(-1deg);margin:12px 0}
+  .postit b{color:#7a4a00}
+  .pegbox{background:#3a1a20;border:2px solid var(--vermelho);border-radius:12px;padding:12px 14px;margin:12px 0;font-size:.92rem}
+  .pegbox b{color:#ffb9b3}
+  .flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+  .flip{perspective:900px;height:185px;cursor:pointer}
+  .flip .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .flip.on .inner{transform:rotateY(180deg)}
+  .flip .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:.88rem}
+  .flip .front{background:linear-gradient(135deg,#242b3f,#171b26);border:1px solid var(--aco2);font-weight:bold;font-size:1rem}
+  .flip .front small{display:block;color:var(--cinza);font-weight:normal;font-size:.72rem;margin-top:6px}
+  .flip .back{background:#12301f;border:1px solid var(--verde);transform:rotateY(180deg)}
+  .tabela{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:8px}
+  .tabela th,.tabela td{border:1px solid var(--aco);padding:7px 9px;text-align:left;vertical-align:top}
+  .tabela th{background:#222838}
+  .duelo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+  .duelo .lado{background:#141925;border-radius:12px;padding:12px;border:2px solid var(--aco2);text-align:center}
+  .duelo .lado.l1{border-color:var(--azul)}
+  .duelo .lado.l2{border-color:var(--laranja)}
+  .duelo .lado .ic{font-size:2rem}
+  .duelo h4{margin:4px 0}
+  .duelo.tres{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:600px){.duelo,.duelo.tres{grid-template-columns:1fr}}
+  .numeros{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .numeros div{background:#0a0c12;border:1px solid #272d3c;border-radius:12px;padding:10px;text-align:center;font-size:.82rem}
+  .numeros div span{display:block;font-family:'Courier New',monospace;font-size:1.35rem;font-weight:bold;color:var(--laranja)}
+  .linha{border-left:3px solid var(--laranja);margin:10px 0 10px 10px;padding-left:16px}
+  .linha .ev{position:relative;margin-bottom:12px}
+  .linha .ev:before{content:"";position:absolute;left:-23px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--laranja);box-shadow:0 0 0 3px rgba(255,159,67,.2)}
+  .linha .ev b{color:var(--amarelo);display:block;font-family:'Courier New',monospace}
+  .gloss{columns:2;column-gap:18px}
+  .gloss div{break-inside:avoid;margin-bottom:8px;font-size:.9rem}
+  .gloss b{color:var(--laranja)}
+  @media(max-width:600px){.gloss{columns:1}}
+  .fim{background:linear-gradient(120deg,#1a2a20,#153328);border:2px solid var(--verde);border-radius:16px;padding:18px;margin-top:24px;text-align:center}
+  .fim h3{color:#8fe3b4;margin-bottom:8px}
+  .fim button{background:var(--verde);color:#04231a;border:none;border-radius:10px;padding:12px 20px;font-size:1rem;font-weight:bold;margin:6px;cursor:pointer;font-family:inherit}
+  .fim button:disabled{background:#262d3e;color:#6f7896;cursor:not-allowed}
+  .fim a,.fim a.btn{display:inline-block;margin:6px;background:var(--azul);color:#06203a;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px}
+  .fim a.btn.off{background:#262d3e;color:#6f7896;pointer-events:none}
+  /* ---- index ---- */
+  .selo-pais{display:none;background:#153328;border:1px solid var(--verde);color:#8fe3b4;border-radius:10px;padding:10px 14px;margin:12px 0;text-align:center;font-weight:bold}
+  .selo-pais.show{display:block}
+  .selo-pais button{margin-left:10px;background:transparent;border:1px solid var(--verde);color:#8fe3b4;border-radius:8px;padding:4px 10px;cursor:pointer;font-family:inherit}
+  .trilha{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0}
+  .trilha .card{position:relative;background:var(--fundo2);border:1px solid var(--aco);border-top:1px solid var(--aco);border-radius:16px;padding:16px;text-decoration:none;color:var(--texto);display:block;transition:transform .15s,box-shadow .15s}
+  .trilha .card .passo{font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--cinza)}
+  .trilha .card .emoji{font-size:2rem;margin:4px 0}
+  .trilha .card h3{font-size:1.05rem;margin-bottom:6px}
+  .trilha .card p{font-size:.85rem;color:#c3cada}
+  .trilha .card .estado{margin-top:10px;font-size:.8rem;font-weight:bold;padding:6px 8px;border-radius:8px}
+  .trilha .card.aberto{border-color:var(--laranja)}
+  .trilha .card.aberto:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(255,159,67,.22)}
+  .trilha .card.aberto .estado{background:#2a2314;color:var(--laranja)}
+  .trilha .card.novo{animation:brilho 1.6s ease-in-out 3;border-color:var(--laranja)}
+  @keyframes brilho{0%,100%{box-shadow:0 0 0 rgba(255,159,67,0)}50%{box-shadow:0 0 22px rgba(255,159,67,.6)}}
+  .trilha .card.novo .estado{background:#3a2d12;color:var(--laranja)}
+  .trilha .card.feito{border-color:var(--verde)}
+  .trilha .card.feito .estado{background:#12301f;color:#8fe3b4}
+  .trilha .card.trancado{opacity:.55;filter:grayscale(.6);pointer-events:none;cursor:not-allowed}
+  .trilha .card.trancado .estado{background:#1d212c;color:var(--cinza)}
+  .trilha .card .cadeado{position:absolute;top:10px;right:12px;font-size:1.3rem;padding:0}
+  .como{background:var(--fundo2);border:1px solid var(--aco);border-radius:14px;padding:16px;margin:16px 0}
+  .como h2{color:var(--azul);font-size:1.1rem;margin-bottom:8px}
+  .como ol{margin-left:20px}
+  .como li{margin-bottom:6px}
+  .cai{background:#21283a;border-left:4px solid var(--amarelo);border-radius:0 12px 12px 0;padding:14px 16px;margin:16px 0;font-size:.93rem}
+  .cai h2{color:var(--amarelo);font-size:1.05rem;margin-bottom:6px}
+  .cai p{margin-bottom:6px}
+  .rel{background:var(--fundo2);border:1px dashed var(--azul);border-radius:14px;padding:16px;margin:16px 0}
+  .rel h2{color:var(--azul);font-size:1.1rem;margin-bottom:8px}
+  .rel input{padding:9px;border-radius:8px;border:1px solid var(--aco2);background:#0b0e15;color:var(--texto);font-size:1rem;width:170px;text-transform:uppercase}
+  .rel button{background:var(--azul);color:#06203a;border:none;border-radius:8px;padding:9px 14px;font-weight:bold;margin-left:6px;cursor:pointer;font-family:inherit}
+  .rel .out{margin-top:12px;font-size:.9rem}
+  .rel .bloco{background:#141925;border:1px solid var(--aco);border-radius:10px;padding:10px 12px;margin:8px 0}
+  .rel .bloco b{color:var(--laranja)}
+  .rel .liberar{margin-top:10px;background:var(--verde);color:#04231a}
+  .rel .perigo{background:#471a1c;color:#ffd1cd;border:1px solid var(--vermelho)}
+  .dica{background:#ffe88a;color:#3a2a00;border-radius:4px;padding:12px 14px;font-size:.9rem;box-shadow:3px 4px 10px rgba(0,0,0,.45);transform:rotate(-1deg);margin:16px 0}
+  .dica b{color:#7a4a00}
+  /* ---- modais ---- */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(6,8,14,.92);z-index:50;align-items:center;justify-content:center;padding:16px}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--fundo2);border:1px solid var(--laranja);border-radius:14px;padding:22px;max-width:440px;text-align:center}
+  .modal p{margin-bottom:14px}
+  .modal .big{font-size:2.2rem}
+  .modal a,.modal button{display:inline-block;background:var(--laranja);color:#2a1d00;border:none;border-radius:8px;padding:10px 18px;font-weight:bold;text-decoration:none;font-family:inherit;cursor:pointer}
+  .modal button.sec,.modal .mini{background:transparent;border:1px solid var(--aco2);color:var(--texto);margin-left:8px}
+  .rodape{text-align:center;color:var(--cinza);font-size:.8rem;margin-top:24px}
+
+  .hel{width:30px;height:30px;display:block;margin:0 auto 2px;fill:currentColor}
+  .hel .pas{transform-origin:0 0}
+  .placar .pt.feito .hel .pas{animation:gira 1.4s linear infinite}
+  .placar .pt{width:64px}
+  @keyframes gira{to{transform:rotate(360deg)}}
+  .torre-h{position:absolute;top:6px;width:64px;height:118px;opacity:.55;pointer-events:none}
+  .torre-h.d{right:5%} .torre-h.e{left:5%;width:44px;height:84px;top:30px;opacity:.35}
+  .torre-h .pas{transform-origin:0 0;animation:gira 7s linear infinite}
+  .torre-h.e .pas{animation-duration:9s}
+  @media(max-width:600px){.torre-h{opacity:.25}}
+  .camadas{margin-top:12px;border-radius:14px;overflow:hidden;border:1px solid var(--aco)}
+  .cam{padding:11px 14px;font-size:.92rem;border-bottom:1px solid rgba(255,255,255,.08)}
+  .cam .alt{float:right;font-family:'Courier New',monospace;font-size:.8rem;color:#ffd2a3;margin-left:8px}
+  .cam b{color:#fff}
+  .c5{background:#0a0f1d} .c4{background:#1a1840} .c3{background:#232a5a} .c2{background:#2b4479} .c1{background:#2f6a8f}
+</style>
+</head>
+<body>
+<header>
+  <svg class="torre-h e" viewBox="-30 -30 60 112" aria-hidden="true"><polygon points="-1.2,0 1.2,0 2.6,80 -2.6,80" fill="#d7e6ff"/><g class="pas" fill="#eef5ff"><path d="M0 0 L-3 -4 L0 -27 L3 -4 Z"/><path d="M0 0 L-3 -4 L0 -27 L3 -4 Z" transform="rotate(120)"/><path d="M0 0 L-3 -4 L0 -27 L3 -4 Z" transform="rotate(240)"/></g><circle r="3.4" fill="#ff9f43"/></svg><svg class="torre-h d" viewBox="-30 -30 60 112" aria-hidden="true"><polygon points="-1.2,0 1.2,0 2.6,80 -2.6,80" fill="#d7e6ff"/><g class="pas" fill="#eef5ff"><path d="M0 0 L-3 -4 L0 -27 L3 -4 Z"/><path d="M0 0 L-3 -4 L0 -27 L3 -4 Z" transform="rotate(120)"/><path d="M0 0 L-3 -4 L0 -27 L3 -4 Z" transform="rotate(240)"/></g><circle r="3.4" fill="#ff9f43"/></svg>
+  <div class="selo">Hélices do Céu · Geografia 6º ano · Colégio São José</div>
+  <h1>🗺️ Resumo — Mapa dos Ventos</h1>
+  <p>Tudo o que cai, em camadas, comparações, tabelas, cartas e post-its · Livro pp. 244–247, 250–255 e 261–265</p>
+</header>
+<div class="wrap">
+  <nav class="barra-nav" id="nav">
+    <a href="leitura-guiada.html">📖 Leitura Guiada</a>
+    <a href="quiz.html" data-etapa="quiz">🎯 Quiz</a>
+    <a class="on" href="resumo.html">🗺️ Resumo</a>
+    <a href="simulado.html" data-etapa="simulado">📝 Simulado</a>
+    <a href="index.html">🏠 Início</a>
+  </nav>
+
+  <div class="intro">
+    <h2>🗺️ O Mapa dos Ventos</h2>
+    <p>Todo parque eólico tem um mapa que mostra de onde vem o vento, onde ele bate mais forte e o que muda o tempo lá em cima. Este é o seu: tudo o que cai sobre <b>Atmosfera e dinâmicas climáticas</b>, em camadas, comparações, tabelas, cartas para virar e post-its. Use para fechar as dúvidas que o Teste de Vento (Quiz) mostrou. No fim da página, clique em <b>“Li o resumo até o fim”</b> para destravar a Grande Ventania (Simulado).</p>
+  </div>
+  <div class="painel"><span id="salvo">📏 Rolagem máxima: 0%</span><div class="btns"><button class="mini" onclick="exportar()">📥 Exportar</button><button class="mini" onclick="document.getElementById('imp').click()">📤 Importar</button><input type="file" id="imp" accept="application/json" style="display:none" onchange="importar(event)"><button class="mini" onclick="pedirZerar()">🗑️ Zerar tudo</button></div></div>
+
+  <div class="sec"><span class="pill">Torre 1 · p. 244</span><h2>🌍 A atmosfera em camadas</h2></div>
+  <div class="grande">Mais de <b>800 km</b> de espessura · <b>nitrogênio 78%</b> + <b>oxigênio 21%</b> + <b>1%</b> de outros gases (vapor de água, gás carbônico, ozônio). Ela <b>filtra os raios solares</b> e <b>mantém a temperatura equilibrada</b>. <b>Insolação</b> = radiação solar que atinge a Terra; só pouco mais da metade chega à superfície.</div>
+  <div class="camadas">
+    <div class="cam c5"><span class="alt">acima de 700 km</span><b>Exosfera</b> — a mais externa · 1 200 °C a 1 700 °C · satélites · naves sofrem forte atrito</div>
+    <div class="cam c4"><span class="alt">80 a 700 km</span><b>Termosfera</b> — chega a 2 000 °C · ar muito pouco denso, mas absorve ultravioleta · aurora e Estação Espacial</div>
+    <div class="cam c3"><span class="alt">50 a 80 km</span><b>Mesosfera</b> — a GELADA: abaixo de −100 °C (ar com pouca densidade) · meteoros</div>
+    <div class="cam c2"><span class="alt">12 a 50 km</span><b>Estratosfera</b> — <b>camada de ozônio (O₃)</b>: absorve UV-B e protege a vida</div>
+    <div class="cam c1"><span class="alt">0 a 12 km</span><b>Troposfera</b> — a vida + 75% dos gases · <b>ventos, chuvas e nuvens</b></div>
+  </div>
+  <div class="postit">📌 <b>Truque para lembrar a ordem (de baixo para cima):</b> <b>T</b>ropo → <b>E</b>strato → <b>M</b>eso → <b>T</b>ermo → <b>E</b>xo. “<b>T</b>em <b>E</b>scada <b>M</b>uito <b>T</b>orta <b>E</b>m cima.”</div>
+
+  <div class="sec"><span class="pill gb">Torre 2 · p. 245</span><h2>🌦️ Tempo × clima</h2></div>
+  <div class="duelo">
+    <div class="lado l1"><div class="ic">⏱️</div><h4>Tempo atmosférico</h4><p>Estado da atmosfera num lugar <b>em um momento específico</b>.<br><i>“Hoje está frio.”</i></p></div>
+    <div class="lado l2"><div class="ic">📅</div><h4>Clima</h4><p><b>Sucessão dos tipos de tempo</b>: as condições mais frequentes. Precisa de <b>pelo menos 30 anos</b> de registro.<br><i>“Aqui o inverno é seco.”</i></p></div>
+  </div>
+  <div class="card gb" style="margin-top:12px"><h3>🛰️ Previsão do tempo</h3><ul><li>Desde a Antiguidade: observar <b>intensidade e direção dos ventos</b>.</li><li>Hoje: <b>meteorologistas</b> com <b>balões e satélites meteorológicos</b>; previsão para <b>períodos curtos</b>.</li><li>Importante para <b>agricultura, turismo e transportes aéreo e marítimo</b>.</li><li><b>Inmet</b> (Brasília): previsão diária para todo o país.</li></ul></div>
+
+  <div class="sec"><span class="pill">Torres 3 e 5 · pp. 246 e 250</span><h2>⚖️ Elementos × fatores do clima</h2></div>
+  <div class="duelo">
+    <div class="lado l1"><div class="ic">🧪</div><h4>ELEMENTOS (o que forma o tempo)</h4><p><b>Temperatura · Precipitação · Pressão atmosférica · Vento</b></p></div>
+    <div class="lado l2"><div class="ic">🎛️</div><h4>FATORES (o que mexe nos elementos)</h4><p><b>Latitude · Altitude · Continentalidade · Maritimidade · Correntes marítimas · Massas de ar</b></p></div>
+  </div>
+  <div class="pegbox">⚠️ <b>Pegadinha:</b> “temperatura” e “vento” são ELEMENTOS; “latitude” e “massas de ar” são FATORES. Questão que mistura os dois numa lista de “fatores” está errada.</div>
+
+  <div class="sec"><span class="pill">Torre 3 · p. 246</span><h2>🌡️ Temperatura</h2></div>
+  <div class="grid">
+    <div class="card"><h3>Como o ar esquenta</h3><ul><li>A superfície <b>absorve</b> parte dos raios (outra parte é refletida).</li><li>Ela se aquece e <b>transfere calor para o ar</b>.</li></ul></div>
+    <div class="card"><h3>Onde é mais frio</h3><ul><li><b>Quanto maior a altitude</b>, mais frio.</li><li><b>Quanto mais longe do Equador</b>, mais frio.</li><li>Baixas latitudes (perto do Equador) tendem a ser mais quentes.</li></ul></div>
+    <div class="card"><h3>Amplitude térmica</h3><ul><li>= <b>máxima − mínima</b> num período.</li><li>Ex.: 31 °C − 19 °C = <b>12 °C</b>.</li><li>O mar <b>aumenta a umidade e diminui</b> a amplitude (<b>maritimidade</b>).</li></ul></div>
+  </div>
+
+  <div class="sec"><span class="pill gb">Torre 4 · p. 247</span><h2>🌧️ Os três tipos de chuva</h2></div>
+  <div class="duelo tres">
+    <div class="lado l1"><div class="ic">☀️⬆️</div><h4>Convectiva</h4><p>Muito <b>calor</b> → muita evaporação → ar quente e úmido <b>sobe</b> → condensa → chuva <b>forte e curta</b> (pode causar enchentes).</p></div>
+    <div class="lado l2"><div class="ic">🔵🔴</div><h4>Frontal</h4><p><b>Encontro de ar quente e ar frio</b>: o frio (mais denso) desce; o quente (mais leve) sobe, resfria e condensa.</p></div>
+    <div class="lado l1"><div class="ic">⛰️</div><h4>Orográfica</h4><p>Vento úmido bate em <b>montanha/serra</b>, sobe e chove. Do outro lado, segue <b>seco</b>.</p></div>
+  </div>
+  <div class="grid" style="margin-top:12px">
+    <div class="card gb"><h3>💧 Precipitação</h3><ul><li>Vapor vem da evaporação (rios, oceanos, solos) e da <b>transpiração das plantas</b>.</li><li>Sobe → condensa → nuvens → precipita.</li><li>Camadas muito altas e frias: <b>neve</b> ou <b>granizo</b> (pedras de gelo).</li><li>Brasil: muita chuva na <b>Região Norte</b>; pouca no <b>Sertão nordestino</b>.</li></ul></div>
+    <div class="card gb"><h3>🏙️ Enchentes (MAIS!)</h3><ul><li>Pioram com a <b>impermeabilização do solo</b> e a <b>canalização</b> dos rios.</li><li>Soluções: <b>não jogar lixo na rua</b> e <b>ampliar áreas verdes</b> (a água infiltra).</li></ul></div>
+  </div>
+
+  <div class="sec"><span class="pill">Torres 5 e 6 · pp. 250–251</span><h2>🎛️ Os fatores, um por um</h2></div>
+  <div class="grid">
+    <div class="card"><h3>📐 Latitude</h3><ul><li>Terra quase esférica + eixo inclinado → raios com intensidades diferentes.</li><li><b>Equador</b>: mais intensidade, mais calor. <b>Polos</b>: menos radiação, mais frio.</li></ul></div>
+    <div class="card"><h3>🏔️ Altitude</h3><ul><li><b>Maior altitude = menor temperatura.</b></li><li>O calor vem das partes <b>baixas</b> da superfície; o alto fica longe desse foco.</li><li>Polo Sul: ~3 mil m de altura, média de <b>−49 °C</b>.</li></ul></div>
+    <div class="card"><h3>🌀 Massas de ar</h3><ul><li>Grandes porções de ar com a <b>temperatura e a umidade</b> do lugar onde se formam.</li><li>Zona tropical → <b>quentes</b>; zonas polares → <b>frias</b>.</li></ul></div>
+    <div class="card gb"><h3>🏜️ Continentalidade</h3><ul><li>Interior do continente, longe do mar.</li><li><b>Menos umidade</b> e <b>mais variação</b> de temperatura.</li></ul></div>
+    <div class="card gb"><h3>🏖️ Maritimidade</h3><ul><li>Litoral.</li><li><b>Mais umidade</b> e <b>menos variação</b> de temperatura (evaporação + água e terra esquentam em tempos diferentes).</li></ul></div>
+    <div class="card gb"><h3>🌊 Correntes marítimas</h3><ul><li>Massas de água em movimento: <b>frias ou quentes</b>.</li><li>Principal motor: os <b>ventos</b>. Também: densidade da água, assoalho oceânico, rotação.</li><li>Correntes <b>frias</b> no sudoeste da América do Sul e da África → menos chuva → <b>desertos costeiros</b>.</li></ul></div>
+  </div>
+  <table class="tabela" style="margin-top:12px">
+    <thead><tr><th>Massas de ar no Brasil (mapas p. 251)</th><th>Inverno</th><th>Verão</th></tr></thead>
+    <tbody>
+      <tr><td>Equatorial continental (Ec)</td><td>✅</td><td>✅</td></tr>
+      <tr><td>Equatorial atlântica (Ea)</td><td>✅</td><td>✅</td></tr>
+      <tr><td>Tropical atlântica (Ta)</td><td>✅</td><td>✅</td></tr>
+      <tr><td><b>Polar atlântica (Pa)</b></td><td>✅</td><td>—</td></tr>
+      <tr><td><b>Tropical continental (Tc)</b></td><td>—</td><td>✅</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sec"><span class="pill gb">Torre 7 · pp. 252–253</span><h2>🌬️ Pressão atmosférica e ventos</h2></div>
+  <div class="grande">🌬️ <b>Vento = ar indo da ALTA pressão para a BAIXA pressão.</b> E quem faz mais pressão é o <b>ar frio</b>. Pressão atmosférica = pressão que o ar exerce sobre a superfície da Terra.</div>
+  <div class="grid" style="margin-top:12px">
+    <div class="card gb"><h3>1️⃣ Calor desigual</h3><ul><li>Perto do Equador, o calor se concentra numa <b>área menor</b> → mais quente.</li><li>Longe dele, o mesmo calor se espalha por <b>área maior</b>.</li></ul></div>
+    <div class="card gb"><h3>2️⃣ Temperatura → pressão</h3><ul><li><b>Polos = alta pressão (AP)</b>.</li><li><b>Equador = baixa pressão (BP)</b>.</li><li>Entre eles: zonas alternadas.</li><li><b>Alísios</b>: das áreas subtropicais para o Equador; os mais constantes.</li></ul></div>
+    <div class="card gb"><h3>3️⃣ Rotação desvia</h3><ul><li>H. Norte: indo para o sul → <b>oeste</b>; indo para o norte → <b>leste</b>.</li><li>H. Sul: indo para o norte → <b>oeste</b>; indo para o sul → <b>leste</b>.</li></ul></div>
+  </div>
+  <div class="postit">📌 <b>Freezer:</b> o ar que sai quando você abre a porta <b>desce</b>, porque é mais frio e pesado. Na atmosfera é igual: ar frio desce e se aquece; ar quente sobe e se resfria — um ciclo que espalha o calor pelo planeta.</div>
+
+  <div class="sec"><span class="pill">Torre 8 · p. 254</span><h2>🗺️ Climas da Terra</h2></div>
+  <div style="overflow-x:auto"><table class="tabela">
+    <thead><tr><th>Clima</th><th>Como é (legenda do mapa)</th></tr></thead>
+    <tbody>
+      <tr><td><b>Equatorial</b></td><td>Quente e chuvoso o ano todo.</td></tr>
+      <tr><td><b>Tropical</b></td><td>Quente e chuvoso no verão, seco no inverno; média anual de cerca de 20 °C.</td></tr>
+      <tr><td><b>Subtropical</b></td><td>Verão quente, inverno mais frio; chuvas bem distribuídas.</td></tr>
+      <tr><td><b>Desértico</b></td><td>Extremamente seco; grande variação de temperatura no mesmo dia.</td></tr>
+      <tr><td><b>Semiárido</b></td><td>Quente e seco; chuvas mal distribuídas.</td></tr>
+      <tr><td><b>Mediterrâneo</b></td><td>Verão quente e <b>seco</b>; inverno ameno e <b>chuvoso</b>.</td></tr>
+      <tr><td><b>Polar</b></td><td>Muito frio o ano todo; neve frequente.</td></tr>
+      <tr><td><b>Temperado</b></td><td>Estações bem definidas; verões quentes ou amenos e invernos frios; pode nevar.</td></tr>
+      <tr><td><b>Frio</b></td><td>Verões curtos e amenos; invernos longos, com neve.</td></tr>
+      <tr><td><b>Frio de montanha</b></td><td>Como o frio, mas em áreas de grandes altitudes.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid" style="margin-top:12px">
+    <div class="card"><h3>Onde fica cada um</h3><ul><li>Mais frios: <b>áreas polares e cordilheiras</b> (altitude).</li><li>Perto do Equador: <b>equatorial e tropical</b>.</li><li>Perto dos trópicos e dos <b>paralelos 30°</b>: alta pressão → <b>desértico e semiárido</b>.</li></ul></div>
+    <div class="card"><h3>E a vegetação?</h3><ul><li>Quente e úmido: árvores de <b>grande porte</b> que quase nunca perdem as folhas.</li><li>Com estação seca: árvores de <b>menor porte</b>.</li><li>Deserto: pouca vegetação, <b>cactáceas</b>.</li></ul></div>
+  </div>
+
+  <div class="sec"><span class="pill gb">Torre 9 · p. 255</span><h2>🇧🇷 Climas do Brasil</h2></div>
+  <div class="grande">Predominam o <b>equatorial e o tropical</b>: <b>quentes e úmidos</b>. Em geral: <b>curto período seco (inverno)</b> e <b>longo período chuvoso (verão)</b>. <b>Exceção:</b> no <b>litoral nordestino</b> chove mais no <b>inverno</b>. Fatores: zona intertropical, maritimidade, continentalidade (forte no <b>Centro-Oeste</b>) e massas de ar.</div>
+  <div style="overflow-x:auto;margin-top:12px"><table class="tabela">
+    <thead><tr><th>Clima</th><th>Onde</th><th>Como é</th></tr></thead>
+    <tbody>
+      <tr><td><b>Equatorial úmido</b></td><td>Maior parte da Região Norte</td><td>Altas temperaturas e chuvas abundantes o ano todo.</td></tr>
+      <tr><td><b>Equatorial semiúmido</b></td><td>Faixa de Roraima, Amazonas e nordeste do Pará</td><td>Menos chuva; alterna estação seca e chuvosa; médias acima de 24 °C.</td></tr>
+      <tr><td><b>Tropical</b></td><td>Grande parte do território</td><td>Verões quentes e chuvosos; invernos um pouco mais frios e secos.</td></tr>
+      <tr><td><b>Semiárido</b></td><td>Interior do Nordeste</td><td>Calor o ano todo; pouca chuva, irregular.</td></tr>
+      <tr><td><b>Tropical de altitude</b></td><td>Planaltos do Sudeste, sul do MS e norte do PR</td><td>Médias mais baixas que o tropical; chuvas no verão.</td></tr>
+      <tr><td><b>Tropical atlântico</b></td><td>Parte do litoral do Sudeste e do Nordeste</td><td>Quente; chove no <b>verão</b> (litoral SE) e no <b>inverno</b> (litoral NE).</td></tr>
+      <tr><td><b>Subtropical</b></td><td>Quase toda a Região Sul, sul de SP e do MS</td><td>Inverno frio (pode chegar a <b>0 °C</b>), verão quente; chuvas bem distribuídas.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="postit">📌 <b>Rios Voadores</b> (projeto de 2007): pesquisa como a umidade da <b>floresta Amazônica</b> leva chuva para outras regiões do Brasil.</div>
+
+  <div class="sec"><span class="pill">Torre 10 · pp. 260–261</span><h2>🏭 Poluição do ar e chuva ácida</h2></div>
+  <div class="grid">
+    <div class="card"><h3>Poluição atmosférica</h3><ul><li>Causa principal: <b>queima de combustíveis fósseis</b> (carvão mineral, petróleo, gás natural).</li><li>Libera <b>monóxido e dióxido de carbono</b>.</li><li>Cresce com a <b>industrialização e a urbanização</b>.</li></ul></div>
+    <div class="card"><h3>Como diminuir</h3><ul><li>Filtragem e <b>depuração</b> (limpeza) de gases tóxicos.</li><li>Controle das <b>queimadas</b>.</li><li>Preservar <b>florestas e áreas verdes</b>.</li><li>Trocar por <b>energia limpa</b> (solar e eólica).</li></ul></div>
+    <div class="card"><h3>Chuva ácida</h3><ul><li>Gases poluentes + vapor de água → <b>ácidos</b>.</li><li>Altera <b>solo e água</b>, destrói <b>vegetação</b>, <b>corrói construções e monumentos</b>.</li><li>O <b>vento</b> leva para <b>áreas distantes</b>.</li></ul></div>
+  </div>
+
+  <div class="sec"><span class="pill gb">Torre 11 · pp. 262–263</span><h2>🌫️ Inversão térmica × ilha de calor</h2></div>
+  <div class="duelo">
+    <div class="lado l1"><div class="ic">🌫️</div><h4>Inversão térmica</h4><p><b>Ar frio EMBAIXO</b>, ar quente em cima. O ar frio, pesado, fica parado e <b>prende a poluição</b>. Grandes cidades, <b>meses frios, primeiras horas da manhã</b>. Problemas respiratórios.</p></div>
+    <div class="lado l2"><div class="ic">🏙️🔥</div><h4>Ilha de calor</h4><p><b>Cidade mais quente que a área rural</b> próxima. Causas: asfalto e concreto (solo impermeável), prédios que barram o vento, gases de indústrias e carros, menos vegetação.</p></div>
+  </div>
+  <div class="numeros" style="margin-top:12px">
+    <div><span>~33 °C</span>área central (gráfico p. 263)</div>
+    <div><span>~29,5 °C</span>área rural (gráfico p. 263)</div>
+    <div><span>+10 °C</span>diferença centro × entorno na Grande São Paulo (estudos de 1985)</div>
+  </div>
+
+  <div class="sec"><span class="pill">Torre 12 · pp. 264–265</span><h2>🔥 Efeito estufa e mudanças climáticas</h2></div>
+  <div class="duelo tres">
+    <div class="lado l1"><div class="ic">🌍</div><h4>Efeito estufa</h4><p>Gases da atmosfera <b>retêm parte da energia solar</b>. Natural e <b>indispensável</b>: mantém a temperatura estável.</p></div>
+    <div class="lado l2"><div class="ic">🌡️⬆️</div><h4>Aquecimento global</h4><p>Elevação da <b>temperatura média</b> pela <b>intensificação humana</b> do efeito estufa (desde a Revolução Industrial; gás carbônico e metano).</p></div>
+    <div class="lado l1"><div class="ic">🌪️</div><h4>Mudanças climáticas</h4><p>Transformações <b>a longo prazo</b> nos padrões de temperatura e clima, provocadas pelo aquecimento global.</p></div>
+  </div>
+  <div class="grid" style="margin-top:12px">
+    <div class="card"><h3>Consequências</h3><ul><li>Derretimento das <b>geleiras</b>.</li><li><b>Nível do mar</b> subindo (ilhas e cidades litorâneas em risco).</li><li>Menos <b>água doce</b>.</li><li>Ecossistemas alterados.</li><li>Mais <b>eventos extremos</b>: secas, chuvas intensas, enchentes, furacões, ondas de calor.</li></ul></div>
+    <div class="card"><h3>Soluções citadas</h3><ul><li><b>Acordos mundiais</b> para reduzir emissões.</li><li><b>Plantar árvores</b> (retiram gás carbônico).</li><li>Tecnologias eficientes e que capturam CO₂.</li><li><b>Energia solar e eólica</b> no lugar de combustível fóssil.</li><li>Campanhas de conscientização.</li></ul></div>
+  </div>
+  <div class="linha">
+    <div class="ev"><b>Revolução Industrial</b>Começa a intensificação do efeito estufa pela ação humana.</div>
+    <div class="ev"><b>2015 · Acordo de Paris</b><b>195 países</b>: limitar o aumento médio da temperatura a <b>1,5 °C até 2100</b>.</div>
+    <div class="ev"><b>2022 · COP27 (Egito)</b>Plano de Implementação de Sharm el-Sheikh: emissões líquidas zeradas até meados do século XXI; financiamento e recursos para países em desenvolvimento.</div>
+  </div>
+
+  <div class="sec"><span class="pill gb">Números</span><h2>🔢 Números que a prova adora</h2></div>
+  <div class="numeros">
+    <div><span>800 km</span>espessura da atmosfera (mais de)</div>
+    <div><span>78% · 21%</span>nitrogênio · oxigênio</div>
+    <div><span>75%</span>dos gases ficam na troposfera</div>
+    <div><span>12 · 50 · 80 · 700</span>km: limites das camadas</div>
+    <div><span>−100 °C</span>mesosfera (abaixo disso)</div>
+    <div><span>2 000 °C</span>termosfera</div>
+    <div><span>30 anos</span>para definir um clima</div>
+    <div><span>−49 °C</span>média no polo Sul</div>
+    <div><span>1,5 °C</span>meta do Acordo de Paris</div>
+  </div>
+
+  <div class="sec"><span class="pill">Cartas</span><h2>🃏 Vire a carta (clique)</h2></div>
+  <div class="flips">
+    <div class="flip" onclick="this.classList.toggle('on')"><div class="inner"><div class="face front">Insolação<small>o que é?</small></div><div class="face back">A <b>radiação solar</b> que atinge a Terra. Só pouco mais da metade chega à superfície.</div></div></div>
+    <div class="flip" onclick="this.classList.toggle('on')"><div class="inner"><div class="face front">Amplitude térmica<small>o que é?</small></div><div class="face back">Diferença entre a temperatura <b>máxima e a mínima</b> de um lugar num período.</div></div></div>
+    <div class="flip" onclick="this.classList.toggle('on')"><div class="inner"><div class="face front">Granizo<small>o que é?</small></div><div class="face back"><b>Pedras de gelo</b>: precipitação quando o vapor chega a camadas muito altas e frias.</div></div></div>
+    <div class="flip" onclick="this.classList.toggle('on')"><div class="inner"><div class="face front">Alísios<small>o que são?</small></div><div class="face back">Ventos das áreas <b>subtropicais</b> para as zonas <b>equatoriais</b>; os mais constantes.</div></div></div>
+    <div class="flip" onclick="this.classList.toggle('on')"><div class="inner"><div class="face front">Massa de ar<small>o que é?</small></div><div class="face back">Grande porção de ar com a <b>temperatura e a umidade</b> do lugar onde se formou.</div></div></div>
+    <div class="flip" onclick="this.classList.toggle('on')"><div class="inner"><div class="face front">Depuração<small>o que é?</small></div><div class="face back">Processo de <b>limpeza ou eliminação</b> de substâncias indesejáveis (gases tóxicos).</div></div></div>
+    <div class="flip" onclick="this.classList.toggle('on')"><div class="inner"><div class="face front">Pressão atmosférica<small>o que é?</small></div><div class="face back">A pressão que o <b>ar exerce sobre a superfície</b> da Terra. Ar frio = pressão maior.</div></div></div>
+    <div class="flip" onclick="this.classList.toggle('on')"><div class="inner"><div class="face front">Meteorologista<small>o que faz?</small></div><div class="face back">Analisa dados de temperatura, umidade e pressão e faz a <b>previsão do tempo</b>.</div></div></div>
+  </div>
+
+  <div class="sec"><span class="pill gb">Glossário</span><h2>📖 Palavras do capítulo</h2></div>
+  <div class="gloss">
+    <div><b>Atmosfera:</b> camada gasosa que envolve a Terra.</div>
+    <div><b>Camada de ozônio:</b> fica na estratosfera; absorve os raios UV-B.</div>
+    <div><b>Tempo atmosférico:</b> estado da atmosfera num momento.</div>
+    <div><b>Clima:</b> sucessão dos tipos de tempo; o mais frequente.</div>
+    <div><b>Nebulosidade:</b> cobertura de nuvens.</div>
+    <div><b>Precipitação:</b> chuva, neve ou granizo.</div>
+    <div><b>Condensação:</b> quando o vapor de água sobe e se condensa, formam-se as nuvens.</div>
+    <div><b>Maritimidade:</b> influência do mar (mais umidade, menos variação).</div>
+    <div><b>Continentalidade:</b> interior do continente (menos umidade, mais variação).</div>
+    <div><b>Corrente marítima:</b> massa de água oceânica em movimento, fria ou quente.</div>
+    <div><b>Circulação geral da atmosfera:</b> padrão dos ventos no planeta.</div>
+    <div><b>Cactáceas:</b> plantas que sobrevivem com pouca água.</div>
+    <div><b>Combustíveis fósseis:</b> carvão mineral, petróleo e gás natural.</div>
+    <div><b>Chuva ácida:</b> chuva com ácidos formados por gases poluentes.</div>
+    <div><b>Inversão térmica:</b> ar frio preso embaixo do ar quente.</div>
+    <div><b>Ilha de calor:</b> cidade mais quente que a área rural próxima.</div>
+    <div><b>Impermeabilização:</b> cobrir o solo (asfalto, concreto) e impedir a água de entrar.</div>
+    <div><b>Efeito estufa:</b> gases retêm parte do calor do Sol; natural.</div>
+    <div><b>Aquecimento global:</b> aumento da temperatura média da Terra.</div>
+    <div><b>Eventos climáticos extremos:</b> chuvas intensas, secas prolongadas, ondas de calor.</div>
+  </div>
+
+  <div class="pegbox">⚠️ <b>Última conferida antes da prova:</b> ozônio = estratosfera · vento = alta → baixa pressão · ar frio = mais pressão · maritimidade diminui a amplitude · inversão = ar frio embaixo · efeito estufa é natural · litoral nordestino chove no inverno · Acordo de Paris = 2015, 1,5 °C até 2100.</div>
+
+  <div class="fim" id="fim">
+    <h3 id="fim-h3">🔒 Próxima etapa: Simulado</h3>
+    <p id="fim-txt">Role até aqui e confirme a leitura para destravar o Simulado.</p>
+    <button id="btn-li" onclick="confirmarLeitura()" disabled>✅ Li o resumo até o fim</button>
+    <a class="btn off" id="btn-prox" href="simulado.html">📝 Pronto para o Simulado!</a>
+  </div>
+
+  <div class="rodape">Feito com carinho para o jovem aprendiz. 🌀 Bons ventos e boa prova!</div>
+</div>
+
+<div class="modal-bg" id="lock">
+  <div class="modal">
+    <div class="big">🔒</div>
+    <p><b>Esta etapa ainda está trancada.</b></p>
+    <p id="lock-txt">Para abrir o Resumo, envie o Quiz.</p>
+    <a href="index.html">Voltar ao início</a>
+  </div>
+</div>
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <p id="modal-txt"></p>
+    <button onclick="fecharModal()" id="modal-ok">Ok</button>
+    <button class="mini" onclick="fecharModal()" id="modal-cancel" style="display:none;margin-left:8px">Cancelar</button>
+  </div>
+</div>
+
+<script>
+/* ====== TRILHA COM CADEADOS (módulo comum do kit) ====== */
+var KIT='helices_do_ceu';
+var TRILHA=[
+ {id:'leitura', chave:KIT+'_leitura_v1', nome:'Leitura Guiada', arquivo:'leitura-guiada.html', emoji:'📖'},
+ {id:'quiz', chave:KIT+'_quiz_v1', nome:'Quiz', arquivo:'quiz.html', emoji:'🎯'},
+ {id:'resumo', chave:KIT+'_resumo_v1', nome:'Resumo', arquivo:'resumo.html', emoji:'🗺️'},
+ {id:'simulado', chave:KIT+'_simulado_v1', nome:'Simulado', arquivo:'simulado.html', emoji:'📝'}
+];
+function lerJSON(k){ try{ var s=localStorage.getItem(k); return s?JSON.parse(s):null; }catch(e){ return null; } }
+function trilhaLiberada(){ var t=lerJSON(KIT+'_trilha_v1'); return !!(t&&t.liberadoPelosPais); }
+function etapaConcluida(id){ var e=TRILHA.filter(function(t){return t.id===id;})[0]; var d=lerJSON(e.chave); return !!(d&&d.concluido); }
+function podeAbrir(id){ var idx=TRILHA.map(function(t){return t.id;}).indexOf(id); if(idx<=0||trilhaLiberada()) return true; return etapaConcluida(TRILHA[idx-1].id); }
+function marcarNav(){
+  var links=document.querySelectorAll('#nav a[data-etapa]');
+  for(var i=0;i<links.length;i++){ var id=links[i].getAttribute('data-etapa'); if(!podeAbrir(id)){ links[i].classList.add('lock'); links[i].textContent='🔒 '+links[i].textContent.replace('🔒 ',''); links[i].setAttribute('title','Ainda trancado'); } else { links[i].classList.remove('lock'); links[i].textContent=links[i].textContent.replace('🔒 ',''); } }
+}
+
+function checarTrava(){
+  if(podeAbrir('resumo')) return true;
+  var L=lerJSON(KIT+'_leitura_v1');
+  document.getElementById('lock-txt').textContent=(L&&L.concluido)?'Para abrir o Resumo, envie o Quiz.':'Para abrir o Resumo, conclua a Leitura Guiada e envie o Quiz.';
+  document.getElementById('lock').classList.add('show');
+  document.querySelector('.wrap').style.filter='blur(6px)';
+  return false;
+}
+
+/* ====== ESTADO DO RESUMO ====== */
+var CHAVE=KIT+'_resumo_v1'; var mem={}; var estado=carregar();
+function carregar(){ try{ var s=localStorage.getItem(CHAVE); if(s) return JSON.parse(s);}catch(e){ if(mem[CHAVE]) return JSON.parse(mem[CHAVE]); } return {rolagemMax:0}; }
+function salvar(){ var s=JSON.stringify(estado); try{ localStorage.setItem(CHAVE,s);}catch(e){ mem[CHAVE]=s; } document.getElementById('salvo').textContent='📏 Rolagem máxima: '+Math.round(estado.rolagemMax||0)+'%'; }
+function medirRolagem(){
+  var h=document.documentElement; var total=h.scrollHeight-h.clientHeight; var pct= total<=0?100:Math.min(100,(window.scrollY||h.scrollTop)/total*100);
+  if(pct>(estado.rolagemMax||0)){ estado.rolagemMax=pct; salvar(); }
+  var b=document.getElementById('btn-li'); if(!estado.concluido && (estado.rolagemMax||0)>=90){ b.disabled=false; }
+}
+function confirmarLeitura(){ if(estado.concluido) return; estado.concluido=true; estado.concluidoEm=new Date().toISOString(); salvar(); atualizarFim(); }
+function atualizarFim(){
+  var h3=document.getElementById('fim-h3'), txt=document.getElementById('fim-txt'), b=document.getElementById('btn-li'), a=document.getElementById('btn-prox');
+  if(estado.concluido||trilhaLiberada()){ h3.textContent='✅ Resumo lido — Simulado destravado!'; txt.textContent=estado.concluido?'Agora encare a Grande Ventania (Simulado), como se fosse a prova.':'Trilha liberada pelos pais.'; if(estado.concluido){ b.disabled=true; b.textContent='✅ Resumo concluído'; } a.classList.remove('off'); }
+  else { h3.textContent='🔒 Próxima etapa: Simulado'; txt.textContent=(estado.rolagemMax||0)>=90?'Confirme a leitura para destravar o Simulado.':'Role até o fim da página para habilitar o botão (rolagem: '+Math.round(estado.rolagemMax||0)+'%).'; a.classList.add('off'); }
+  marcarNav();
+}
+function exportar(){ var blob=new Blob([JSON.stringify(estado,null,2)],{type:'application/json'}); var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='resumo_helices-do-ceu.json'; a.click(); }
+
+function importar(ev){ var f=ev.target.files[0]; if(!f) return; var r=new FileReader(); r.onload=function(){ try{ estado=JSON.parse(r.result); salvar(); atualizarFim(); mostrarModal('✅ Progresso importado!',false);}catch(e){ mostrarModal('❌ Arquivo inválido.',false);} }; r.readAsText(f); }
+var acaoZerar=null;
+function pedirZerar(){ acaoZerar=true; mostrarModal('Zerar a rolagem deste Resumo? (Se ele já foi concluído, o Simulado continua destravado.)',true); }
+function mostrarModal(txt,confirmar){ document.getElementById('modal-txt').innerHTML=txt; document.getElementById('modal').classList.add('show'); document.getElementById('modal-cancel').style.display=confirmar?'inline-block':'none'; document.getElementById('modal-ok').textContent=confirmar?'Sim, zerar':'Ok';
+  document.getElementById('modal-ok').onclick=function(){ if(confirmar&&acaoZerar){ var c=estado.concluido, ce=estado.concluidoEm; estado={rolagemMax:0}; if(c){estado.concluido=true; estado.concluidoEm=ce;} salvar(); atualizarFim(); } acaoZerar=null; fecharModal(); }; }
+function fecharModal(){ document.getElementById('modal').classList.remove('show'); }
+
+if(checarTrava()){ salvar(); atualizarFim(); window.addEventListener('scroll',function(){ medirRolagem(); atualizarFim(); }); setTimeout(function(){ medirRolagem(); atualizarFim(); },300); } else { marcarNav(); }
+</script>
+</body>
+</html>
